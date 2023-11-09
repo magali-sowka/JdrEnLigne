@@ -1,0 +1,91 @@
+﻿@model Filter
+
+<div class="container">
+	<form method="get" asp-page="@Model.Page" asp-page-handler="@Model.Handler" id="form">
+		<input hidden name="handler" value="@Model.Handler" />
+		<div>
+			<div class="accordion accordion-flush" id="filter">
+				<div class="accordion-item border border-0">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed text-bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#filterFormat" aria-expanded="true" aria-controls="filterFormat">
+							Format
+						</button>
+					</h2>
+					<div id="filterFormat" class="accordion-collapse collapse show">
+						<div class="accordion-body px-0">
+							<ul class="list-group">
+								@foreach (SelectedFormat format in Model.Formats)
+								{
+									<li class="list-group-item border border-0 text-start">
+										<input type="checkbox" class="form-check-input" name="filter" value="@("format_" + (int)format.Format)" @Html.Raw(format.Selected ? "checked=\"checked\"" : "")) id="@("format_" + (int)format.Format)" />
+										<label class="form-check-label ms-2" for="@("format_" + (int)format.Format)">
+											@format.Format.GetEnumDescription()
+										</label>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item border border-0">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed text-bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#filterGenres" aria-expanded="true" aria-controls="filterGenres">
+							Thèmes
+						</button>
+					</h2>
+					<div id="filterGenres" class="accordion-collapse collapse show">
+						<div class="accordion-body px-0">
+							<ul class="list-group">
+								@foreach (SelectedGenre genre in Model.Genres)
+								{
+									<li class="list-group-item border border-0 text-start">
+										<input type="checkbox" name="filter" value="@("genre_"+genre.GenreId)" class="form-check-input" @Html.Raw(genre.Selected ? "checked=\"checked\"" : "")) id="@("genre_" + genre.GenreId)" />
+										<label class="form-check-label ms-2" for="@(" genre_"+genre.GenreId)">
+											@genre.Libelle
+										</label>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item border border-0">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed text-bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#filterStatuts" aria-expanded="true" aria-controls="filterStatus">
+							Statut
+						</button>
+					</h2>
+					<div id="filterStatuts" class="accordion-collapse collapse show" @* data-bs-parent="#filter" *@>
+						<div class="accordion-body px-0">
+							<ul class="list-group">
+								@foreach (SelectedStatut statut in Model.Statuts)
+								{
+									<li class="list-group-item border border-0 text-start">
+										<input type="checkbox" name="filter" value="@("statut_"+(int)statut.Statut)" class="form-check-input" @Html.Raw(statut.Selected ? "checked=\"checked\"" : "")) id="@("statut_" + (int)statut.Statut)" />
+										<label class="form-check-label ms-2" for="@("statut_"+(int)statut.Statut)">
+											@statut.Statut.GetEnumDescription()
+										</label>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="my-3">
+				<input type="submit" class="btn btn-primary mb-2 w-100" value="Appliquer les filtres" />
+				<input type="submit" id="resetBtn" class="btn btn-primary w-100" value="Réinitialiser les filtres" />
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+	const checkboxes = Array.from(document.querySelectorAll("input[type='checkbox']"));
+	const resetBtn = document.getElementById("resetBtn");
+	resetBtn.addEventListener("click", function (evt) {
+		evt.preventDefault();
+		checkboxes.forEach(c => c.checked = false);
+		document.getElementById("form").requestSubmit(resetBtn);
+	})
+</script>

@@ -1,0 +1,54 @@
+﻿@page
+@model RegisterModel
+@{
+	ViewData["Title"] = "Nouveau compte";
+}
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card shadow border-0 my-4">
+			<div class="card-header bg-primary bg-gradient py-3">
+				<div class="row">
+					<div class="col-12 text-center">
+						<h2 class="text-white py-2">Créer un compte</h2>
+					</div>
+				</div>
+			</div>
+			<div class="card-body p-4">
+				<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+					<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+					<div class="form-floating mb-3">
+						<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="prenom.nom@example.com" />
+						<label asp-for="Input.Email">Email</label>
+						<span asp-validation-for="Input.Email" class="text-danger"></span>
+					</div>
+					<div class="form-floating mb-3">
+						<input asp-for="Input.Pseudo" class="form-control" aria-required="true" placeholder="pseudo" />
+						<label asp-for="Input.Pseudo">Pseudo</label>
+						<span asp-validation-for="Input.Pseudo" class="text-danger"></span>
+					</div>
+					<div class="form-floating mb-3">
+						<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+						<label asp-for="Input.Password">Password</label>
+						<span asp-validation-for="Input.Password" class="text-danger"></span>
+					</div>
+					<div class="form-floating mb-3">
+						<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+						<label asp-for="Input.ConfirmPassword">Confirm Password</label>
+						<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+					</div>
+					<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Enregistrer</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

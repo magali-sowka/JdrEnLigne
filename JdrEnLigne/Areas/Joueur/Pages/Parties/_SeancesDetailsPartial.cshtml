@@ -1,0 +1,54 @@
+﻿@model PartieSeances
+@inject UserManager<JdrUser> UserManager
+
+@{
+	JdrUser user = await UserManager.GetUserAsync(User);
+	bool isMeneur = (Model.MeneurId == user.Id);
+}
+
+
+<div class="card m-0 p-0">
+	<div class="card-body">
+		@if (Model == null || Model.SeancesList.Count() == 0)
+		{
+			<p>Il n'y a pas encore de séances prévues pour cette partie.</p>
+		}
+		else
+		{
+			<table class="table table-bordered table-striped table-hover switch">
+				<thead>
+					<tr class="table-primary">
+						<th>Date</th>
+						<th>Durée</th>
+						<th>Nom de la séance</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.SeancesList)
+					{
+						<tr>
+							<td>@item.Debut</td>
+							<td>@item.Duree</td>
+							<td>@item.Libelle</td>
+							@if (isMeneur)
+							{
+								<td>Modifier Supprimer</td>
+							}
+						</tr>
+					}
+				</tbody>>
+			</table>
+		}
+	</div>
+</div>
+
+@if (isMeneur)
+{
+	<div class="mt-3">
+		<a class="btn btn-outline-primary w-100" asp-area="Joueur" asp-page="/Seances/Add" asp-route-id="@Model.PartieId">
+			<i class="fa-solid fa-person-circle-plus"></i>
+			Ajouter une séance
+		</a>
+	</div>
+}

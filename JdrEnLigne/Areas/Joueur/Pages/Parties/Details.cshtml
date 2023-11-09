@@ -1,0 +1,75 @@
+﻿@page
+@model DetailsModel
+@inject UserManager<JdrUser> UserManager
+
+
+@{
+	ViewData["Title"] = "Details";
+	JdrUser? joueur = await UserManager.GetUserAsync(User);
+	bool isMeneur = (joueur != null) ?
+		(Model.Partie.Meneur.Id == joueur.Id) :
+		false;
+}
+
+<div class="m-4 bg-primary">
+	<div class="row p-3 m-2">
+		<div class="col-sm-8 text-center d-flex flex-column justify-content-center py-4 bg-primary-subtle shadow">
+			<h1 class="text-uppercase fw-semibold m-0">@Model.Partie.Titre</h1>
+		</div>
+		<div class="col-sm-4 text-center my-2 py-2 text-white">
+			<p class="m-0">Meneur de jeu :</p>
+			<p class="fs-4">
+				<span class="fw-semibold">@Model.Partie.Meneur.Pseudo</span>
+				<a href="#"><i class="fa-solid fa-book-open-reader text-white"></i></a>
+			</p>
+			@if (isMeneur)
+			{
+				<a class="btn btn-danger" href="#"><i class="fa-solid fa-trash"></i> Supprimer la partie</a>
+			}
+			else
+			{
+				<a class="btn btn-danger" href="#"><i class="fa-solid fa-trash"></i> Quitter la partie</a>
+			}
+		</div>
+	</div>
+</div>
+
+<div class="card m-4">
+	<div class="card-header">
+		<ul class="nav nav-tabs card-header-tabs">
+			<li class="nav-item">
+				<a class="nav-link lien" href="#partieDetails"><span class="fs-4">Partie</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link lien" href="#joueursDetails"><span class="fs-4">Joueurs</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link lien" href="#seancesDetails"><span class="fs-4">Séances</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link lien" href="#discussionsDetails"><span class="fs-4">Discussions</span></a>
+			</li>
+		</ul>
+	</div>
+	<div class="card-body">
+		<div id="partieDetails" class="details h-100">
+			<partial name="_PartieDetailsPartial" model=Model.Partie />
+		</div>
+		<div id="joueursDetails" class="details h-100">
+			<partial name="_JoueursDetailsPartial" model=Model.Joueurs />
+		</div>
+		<div id="seancesDetails" class="details h-100">
+			<partial name="_SeancesDetailsPartial" model=Model.Seances />
+		</div>
+		<div id="discussionsDetails" class="details h-100">
+			<partial name="_discussDetailsPartial" model=Model.Partie />
+		</div>
+	</div>
+	<div class="card-footer">
+		<a class="btn btn-light" asp-area="Joueur" asp-page="/Parties/Index" asp-page-handler="@(isMeneur?"MeneurIndex":"JoueurIndex")">
+			Retour
+		</a>
+	</div>
+</div>
+
+<script src="~/js/partieDetails.js"></script>

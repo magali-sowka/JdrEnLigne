@@ -1,0 +1,12 @@
+﻿@model Search
+
+<div>
+	<form method="@Model.Method" asp-area="@Model.Area" asp-page="@Model.Page" asp-page-handler="@Model.Handler">
+		<div class="btn-group w-100">
+			<input type="text" class="form-control" name="searchText" placeholder="Rechercher" value="@Model.SearchText" />
+			<button type="submit" class="btn btn-info" aria-label="Rechercher">
+				<i class="fa-solid fa-magnifying-glass"></i>
+			</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,50 @@
+﻿@model Pagination;
+
+@{
+	Pagination pages = Model;
+	int pageNo = pages.CurrentPage;
+	string[] filters = pages.Filters;
+}
+
+<div class="container">
+	@if (pages.TotalPages > 0)
+	{
+		<ul class="pagination justify-content-end">
+
+			@if (pages.CurrentPage > 1)
+			{
+				<li class="page-item">
+					<a class="page-link" href="@Url.Page(Model.Page, Model.Handler, new {area=Model.Area, pg=1, dateSort=Model.DateSort, filter = Model.Filters})">
+						<i class="fa-solid fa-angles-left"></i>
+					</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="@Url.Page(Model.Page, Model.Handler, new {area=Model.Area, pg=(pages.CurrentPage -1), dateSort=Model.DateSort, filter = Model.Filters})">
+						<i class="fa-solid fa-angle-left"></i>
+					</a>
+				</li>
+			}
+			@for (int pg = pages.StartPage; pg <= pages.EndPage; pg++)
+			{
+				<li class="page-item @(pg == pages.CurrentPage ? "active" :"")">
+					<a class="page-link" href="@Url.Page(Model.Page, Model.Handler, new {area=Model.Area, pg=pg, dateSort=Model.DateSort, filter = Model.Filters})">@pg</a>
+				</li>
+			}
+
+			@if (pages.CurrentPage < pages.TotalPages)
+			{
+				<li class="page-item">
+					<a class="page-link" href="@Url.Page(Model.Page, Model.Handler, new {area=Model.Area, pg=(pages.CurrentPage +1), dateSort=Model.DateSort, filter = Model.Filters})">
+						<i class="fa-solid fa-angle-right"></i>
+					</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="@Url.Page(Model.Page, Model.Handler, new {area=Model.Area, pg=pages.TotalPages, dateSort=Model.DateSort, filter = Model.Filters})">
+						<i class="fa-solid fa-angles-right"></i>
+					</a>
+				</li>
+
+			}
+		</ul>
+	}
+</div>
